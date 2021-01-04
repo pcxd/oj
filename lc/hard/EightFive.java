@@ -4,9 +4,37 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 
-public class EightFour
+public class EightFive
 {
-    public static int largestRectangleArea(int[] heights)
+    public static int maximalRectangle(char[][] matrix)
+    {
+        if(matrix == null || matrix.length == 0 || matrix[0].length == 0)
+            return 0;
+
+        int H = matrix.length;
+        int W = matrix[0].length;
+        int[] buff = new int[W];
+
+        int ret = 0;
+        for(int h = 0; h < H; h++)
+        {
+            for(int w = 0; w < W; w++)
+            {
+                if(matrix[h][w] == '1')
+                    buff[w] += matrix[h][w] - '0';
+                else
+                    buff[w] = 0;
+            }
+
+            int buffRet = largestRectangleArea(buff);
+            ret = Math.max(ret, buffRet);
+        }
+
+        return ret;
+    }
+
+
+    private static int largestRectangleArea(int[] heights)
     {
         if(heights == null || heights.length == 0)
             return 0;
@@ -19,7 +47,7 @@ public class EightFour
 
         int ret = 0;
         Deque<Integer> stack = new ArrayDeque<>();  // mono ascend stack
-        for(int i = 0; i < n; i++)
+        for(int i = 0; i <= n; i++)
         {
             while(!stack.isEmpty() && hs[i] <= hs[stack.peekLast()])
             {
@@ -39,8 +67,8 @@ public class EightFour
 
     public static void main(String[] args)
     {
-        int[] heights = {2, 1, 5, 6, 2, 3};
-        int ret = largestRectangleArea(heights);
+        char[][] matrix = {{'0', '1'}, {'1', '0'}};
+        int ret = maximalRectangle(matrix);
         System.out.println(ret);
     }
 }
